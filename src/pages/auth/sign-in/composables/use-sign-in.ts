@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { useAuthStore } from "@/stores/auth";
-import { AuthApi } from "../services/auth-api";
+import { AuthApi } from "../../services/auth-api";
 import {
   SignInValidationSchema,
   type SignInSchemaType,

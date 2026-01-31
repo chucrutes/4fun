@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SignInForm from "../components/sign-in.form.vue";
+import SignInForm from "./components/sign-in.form.vue";
 </script>
 
 <template>

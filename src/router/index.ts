@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { authRoutes } from "@/modules/auth/router";
+import { authRoutes } from "@/pages/auth/router";
 
 const router = createRouter({
   history: createWebHistory(),
