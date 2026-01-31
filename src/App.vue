@@ -1,32 +1,17 @@
-<script setup lang="ts">
-import { ref } from "vue";
-import Input from "./components/atoms/input.vue";
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import GuestLayout from "@/layouts/guest-layout.vue";
 
-const email = ref("");
-const password = ref("");
+const route = useRoute();
+
+const layout = computed(() => {
+  return route.meta.layout || GuestLayout;
+});
 </script>
 
 <template>
-  <main>
-    <form action="">
-      <label for="email">
-        Email:
-        <Input
-          v-model="password"
-          name="email"
-          type="email"
-          placeholder="Enter your email"
-        />
-      </label>
-      <label for="password">
-        password:
-        <Input
-          name="password"
-          type="password"
-          placeholder="Enter your password"
-          v-model="email"
-        />
-      </label>
-    </form>
-  </main>
+  <component :is="layout">
+    <RouterView />
+  </component>
 </template>

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 interface InputProps {
+  id?: string;
   name: string;
   autocomplete?: string;
   placeholder?: string;
@@ -44,15 +45,18 @@ const togglePasswordVisibility = () => {
   passwordVisible.value = !passwordVisible.value;
 };
 </script>
-
 <template>
-  <div class="">
+  <div
+    class="flex rounded-lg px2 py-1 border-2 border-surface-800 hover:border-primary focus-within:border focus-within:red-500 focus-within:border-red-500"
+  >
     <input
+      :id="name"
       :name="name"
       :autocomplete="autocomplete"
       :placeholder="placeholder"
       :value="modelValue"
       :type="inputType"
+      class="grow outline-none"
       :maxlength="maxLength"
       :disabled="disabled"
       @focus="scrollToInput"
@@ -62,7 +66,7 @@ const togglePasswordVisibility = () => {
       v-if="type === 'password'"
       type="button"
       @click="togglePasswordVisibility"
-      class=""
+      class="text-surface-300 hover:text-surface-50"
       aria-label="Toggle password visibility"
     >
       <FontAwesomeIcon
