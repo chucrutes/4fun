@@ -47,7 +47,7 @@ const togglePasswordVisibility = () => {
 </script>
 <template>
   <div
-    class="flex rounded-lg px2 py-1 border-2 border-surface-800 hover:border-primary focus-within:border focus-within:red-500 focus-within:border-red-500"
+    class="flex rounded-lg px2 py-1 border border-surface-800 hover:border-primary focus-within:border-2 focus-within:primary focus-within:border-primary"
   >
     <input
       :id="name"

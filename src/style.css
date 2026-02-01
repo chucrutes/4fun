@@ -2,6 +2,19 @@
 
 @theme {
   --color-primary: #0561b2;
+  --color-secondary: #d1d5db;
+}
+
+@layer base {
+  h1 {
+    @apply text-3xl;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--color-black);
+  }
 }
 
 :root {
@@ -17,11 +30,4 @@
 #app {
   margin: 0 auto;
   text-align: center;
-}
-
-header,
-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
