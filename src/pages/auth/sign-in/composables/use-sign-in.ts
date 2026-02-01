@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import router from "@/router";
 import { useForm } from "vee-validate";
 import { useAuthStore } from "@/stores/auth";
 import { AuthApi } from "../../services/auth-api";
@@ -8,7 +9,7 @@ import {
 } from "../types/sign-in.schema";
 
 export function useSignInForm() {
-  const { setToken } = useAuthStore();
+  const { setTokens, setUser } = useAuthStore();
 
   const errorMessage = ref<string | null>(null);
 
@@ -31,13 +32,13 @@ export function useSignInForm() {
       return;
     }
 
-    const token = req.data.access_token;
+    const { access_token, refresh_token } = req.data;
 
-    if (!token) {
+    if (!access_token) {
       return;
     }
 
-    const profileReq = await AuthApi.getProfile(token);
+    const profileReq = await AuthApi.getProfile(access_token);
 
     if (!profileReq.success) {
       errorMessage.value = "Erro ao obter perfil.";
@@ -49,9 +50,12 @@ export function useSignInForm() {
       return;
     }
 
-    setToken(token);
+    setTokens(access_token, refresh_token);
+    setUser(profileReq.data);
 
     errorMessage.value = null;
+
+    router.push("/dashboard");
   });
 
   return {
