@@ -4,8 +4,14 @@ import Button from "@/components/atoms/button.vue";
 import DashboardIcon from "@/assets/dashboard-icon.vue";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import router from "@/router";
 
 const { user, logout } = useAuthStore();
+
+const handleLogout = () => {
+  logout();
+  router.push("/");
+};
 </script>
 
 <template>
@@ -18,13 +24,12 @@ const { user, logout } = useAuthStore();
         <DashboardIcon />
       </div>
       <div class="px-2 justify-self-end">
-        <Button :click="() => logout()">
+        <Button :click="handleLogout">
           <FontAwesomeIcon :icon="faSignOut" class="cursor-pointer text-2xl" />
         </Button>
       </div>
     </header>
-    <main class="flex flex-col flex-1 bg-secondary">
-      <h1>Auth</h1>
+    <main class="flex flex-col flex-1 bg-secondary px-2">
       <RouterView />
     </main>
   </div>
