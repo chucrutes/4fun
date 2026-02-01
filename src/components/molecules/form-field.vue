@@ -10,7 +10,7 @@ defineProps<FormFieldrops>();
 </script>
 
 <template>
-  <div class="flex flex-col w-full max-w-sm gap-1">
+  <div class="flex flex-col w-full max-w-3xs gap-1">
     <label :for="id" class="text-left font-medium text-xl">
       {{ label }}
     </label>

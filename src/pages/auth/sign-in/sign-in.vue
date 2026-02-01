@@ -4,7 +4,7 @@ import SignInForm from "./components/sign-in.form.vue";
 
 <template>
   <div class="flex flex-1 justify-center items-center">
-    <div class="w-full max-w-md">
+    <div class="w-full max-w-xl">
       <div class="pb-4">
         <h1>Acesse sua conta</h1>
       </div>

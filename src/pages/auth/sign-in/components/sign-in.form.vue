@@ -28,11 +28,13 @@ const { email, handleSubmit, password, errors, errorMessage } = useSignInForm();
         autocomplete="current-password"
       />
     </FormField>
-    <button
-      class="bg-primary rounded-lg px-4 py-2 text-2xl text-white"
-      type="submit"
-    >
-      Entrar
-    </button>
+    <div class="py-2">
+      <button
+        class="bg-primary rounded-lg px-4 py-2 text-2xl text-white"
+        type="submit"
+      >
+        Entrar
+      </button>
+    </div>
   </form>
 </template>
