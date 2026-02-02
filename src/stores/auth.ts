@@ -43,6 +43,7 @@ export const useAuthStore = defineStore("auth", {
       this.setUser(null);
     },
     async fetchUser() {
+      if (!this.accessToken) return;
       const response = await AuthApi.getProfile(this.accessToken || "");
 
       if (response.success) {
