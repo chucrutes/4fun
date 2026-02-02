@@ -47,7 +47,7 @@ const togglePasswordVisibility = () => {
 </script>
 <template>
   <div
-    class="flex rounded-lg px2 py-1 border border-surface-800 hover:border-primary focus-within:border-2 focus-within:primary focus-within:border-primary"
+    class="flex rounded-lg px2 py-1 border border-gray-800 hover:border-primary focus-within:border-2 focus-within:primary focus-within:border-primary"
   >
     <input
       :id="name"
@@ -66,12 +66,11 @@ const togglePasswordVisibility = () => {
       v-if="type === 'password'"
       type="button"
       @click="togglePasswordVisibility"
-      class="text-surface-300 hover:text-surface-50"
       aria-label="Toggle password visibility"
     >
       <FontAwesomeIcon
         :icon="passwordVisible ? faEye : faEyeSlash"
-        class="h-5 w-5"
+        class="h-5 w-5 pr-2"
       />
     </button>
   </div>

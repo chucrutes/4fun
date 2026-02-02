@@ -32,7 +32,7 @@ const sizes = {
     @click="click"
     :type="type"
     :disabled="disabled || isLoading"
-    class="font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none"
+    class="font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
     :class="[variants[variant], sizes[size]]"
   >
     <slot></slot>
