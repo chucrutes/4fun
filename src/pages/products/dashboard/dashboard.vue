@@ -36,11 +36,11 @@ onMounted(async () => {
 
 <template>
   <div class="flex flex-col">
-    <div class="py-16">
+    <div class="p-8">
       <H1>Dashboard</H1>
     </div>
     <div
-      class="gap-y-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center md:gap-x-4 md:gap-y-0"
+      class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center"
     >
       <div
         v-if="isLoading"
@@ -63,7 +63,7 @@ onMounted(async () => {
       </SummaryCard>
     </div>
     <div class="py-16">
-      <div class="flex justify-center w-full">
+      <div class="flex justify-center w-full overflow-x-auto">
         <div>
           <ProductTable :items="products" />
         </div>
