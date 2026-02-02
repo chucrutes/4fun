@@ -70,7 +70,7 @@ const togglePasswordVisibility = () => {
     >
       <FontAwesomeIcon
         :icon="passwordVisible ? faEye : faEyeSlash"
-        class="h-5 w-5"
+        class="h-5 w-5 pr-2"
       />
     </button>
   </div>
