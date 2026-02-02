@@ -11,19 +11,20 @@ import { faBoxOpen, faGrip } from "@fortawesome/free-solid-svg-icons";
 
 const products = ref<Product[]>([]);
 const activeCategories = ref("");
+const isLoading = ref(true);
 
 onMounted(async () => {
   try {
-    const res = await ProductApi.getProducts();
-    const categoryRes = await CategoryApi.getCategories();
+    const [prodRes, catRes] = await Promise.all([
+      ProductApi.getProducts(),
+      CategoryApi.getCategories(),
+    ]);
 
-    if (res.success) {
-      products.value = res.data;
-    }
-    if (categoryRes.success) {
-      activeCategories.value = categoryRes.data.length.toFixed(0);
-    }
-  } catch (e) {}
+    if (prodRes.success) products.value = prodRes.data;
+    if (catRes.success) activeCategories.value = catRes.data.length.toString();
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 
@@ -35,6 +36,13 @@ onMounted(async () => {
     <div
       class="gap-y-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center md:gap-x-4 md:gap-y-0"
     >
+      <div
+        v-if="isLoading"
+        class="bg-gray-100 rounded-xl p-5 border border-gray-200 animate-pulse"
+      >
+        <div class="h-4 bg-gray-300 rounded-md w-1/2 mb-4"></div>
+        <div class="h-8 bg-gray-300 rounded-md w-1/4"></div>
+      </div>
       <SummaryCard label="Produtos" :content="products.length.toFixed(0)">
         <FontAwesomeIcon :icon="faBoxOpen" size="2xl" />
       </SummaryCard>
@@ -51,3 +59,15 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

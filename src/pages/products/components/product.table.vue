@@ -3,6 +3,7 @@ import Td from "@/components/atoms/td.vue";
 import Th from "@/components/atoms/th.vue";
 import Tr from "@/components/atoms/tr.vue";
 import type { Product } from "@/types/product";
+import Button from "@/components/atoms/button.vue";
 import Table from "@/components/molecules/table.vue";
 import { Formatters } from "@/utils/formatter.utils";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
@@ -33,8 +34,14 @@ const props = defineProps<ProductTableProps>();
           </span>
         </Td>
         <Td>
-          <FontAwesomeIcon :icon="faPen" />
-          <FontAwesomeIcon :icon="faTrash" style="color: red" />
+          <div class="flex justify-center gap-2">
+            <Button :disabled="true">
+              <FontAwesomeIcon :icon="faPen" />
+            </Button>
+            <Button :disabled="true">
+              <FontAwesomeIcon :icon="faTrash" style="color: red" />
+            </Button>
+          </div>
         </Td>
       </Tr>
     </tbody>
