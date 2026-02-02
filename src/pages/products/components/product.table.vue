@@ -20,12 +20,14 @@ const props = defineProps<ProductTableProps>();
   <Table>
     <thead>
       <Th>Título</Th>
+      <Th>Categoria</Th>
       <Th>Preço</Th>
       <Th>Ações</Th>
     </thead>
     <tbody>
       <Tr v-for="(item, index) in items" :key="item.id" :index="index">
         <Td>{{ item.title }}</Td>
+        <Td>{{ item.category.name }}</Td>
         <Td>
           <span
             class="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 border border-green-200 rounded-full"
