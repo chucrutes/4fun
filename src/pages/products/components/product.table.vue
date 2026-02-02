@@ -5,6 +5,8 @@ import Tr from "@/components/atoms/tr.vue";
 import type { Product } from "@/types/product";
 import Table from "@/components/molecules/table.vue";
 import { Formatters } from "@/utils/formatter.utils";
+import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 type ProductTableProps = {
   items: Product[];
@@ -18,6 +20,7 @@ const props = defineProps<ProductTableProps>();
     <thead>
       <Th>Título</Th>
       <Th>Preço</Th>
+      <Th>Ações</Th>
     </thead>
     <tbody>
       <Tr v-for="(item, index) in items" :key="item.id" :index="index">
@@ -28,6 +31,10 @@ const props = defineProps<ProductTableProps>();
           >
             $ {{ Formatters.formatNumber(item.price.toString()) }}
           </span>
+        </Td>
+        <Td>
+          <FontAwesomeIcon :icon="faPen" />
+          <FontAwesomeIcon :icon="faTrash" style="color: red" />
         </Td>
       </Tr>
     </tbody>
