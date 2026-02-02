@@ -6,8 +6,8 @@ import type { Product } from "@/types/product";
 import Button from "@/components/atoms/button.vue";
 import Table from "@/components/molecules/table.vue";
 import { Formatters } from "@/utils/formatter.utils";
-import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 
 type ProductTableProps = {
   items: Product[];
@@ -32,7 +32,7 @@ const props = defineProps<ProductTableProps>();
           <span
             class="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 border border-green-200 rounded-full"
           >
-            $ {{ Formatters.formatNumber(item.price.toString()) }}
+            $ {{ Formatters.formatToBrazillianNumber(item.price) }}
           </span>
         </Td>
         <Td>

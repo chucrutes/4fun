@@ -3,14 +3,17 @@ import { onMounted, ref } from "vue";
 import H1 from "@/components/atoms/h1.vue";
 import type { Product } from "@/types/product";
 import { ProductApi } from "../services/product-api";
+import { Formatters } from "@/utils/formatter.utils";
+import { ProductUtils } from "../utils/product-utils";
 import { CategoryApi } from "../services/category-api";
 import ProductTable from "../components/product.table.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
-import { faBoxOpen, faGrip } from "@fortawesome/free-solid-svg-icons";
+import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
 
 const products = ref<Product[]>([]);
 const activeCategories = ref("");
+const avgPrice = ref(0);
 const isLoading = ref(true);
 
 onMounted(async () => {
@@ -20,7 +23,10 @@ onMounted(async () => {
       CategoryApi.getCategories(),
     ]);
 
-    if (prodRes.success) products.value = prodRes.data;
+    if (prodRes.success) {
+      products.value = prodRes.data;
+      avgPrice.value = ProductUtils.avgPrice(products.value);
+    }
     if (catRes.success) activeCategories.value = catRes.data.length.toString();
   } finally {
     isLoading.value = false;
@@ -48,6 +54,12 @@ onMounted(async () => {
       </SummaryCard>
       <SummaryCard label="Categorias ativas" :content="activeCategories">
         <FontAwesomeIcon :icon="faGrip" size="2xl" />
+      </SummaryCard>
+      <SummaryCard
+        label="Preço médio"
+        :content="`R$ ${Formatters.formatToBrazillianNumber(avgPrice)}`"
+      >
+        <FontAwesomeIcon :icon="faTag" size="2xl" />
       </SummaryCard>
     </div>
     <div class="py-16">
