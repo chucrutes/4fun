@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import H1 from "@/components/atoms/h1.vue";
 import type { Product } from "@/types/product";
 import { ProductApi } from "../services/product-api";
 import { CategoryApi } from "../services/category-api";
+import ProductTable from "../components/product.table.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
 import { faBoxOpen, faGrip } from "@fortawesome/free-solid-svg-icons";
-import ProductTable from "./components/product.table.vue";
 
 const products = ref<Product[]>([]);
 const activeCategories = ref("");
@@ -28,7 +29,9 @@ onMounted(async () => {
 
 <template>
   <div class="flex flex-col">
-    <h1 class="py-16">Dashboard</h1>
+    <div class="py-16">
+      <H1>Dashboard</H1>
+    </div>
     <div
       class="gap-y-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center md:gap-x-4 md:gap-y-0"
     >
@@ -39,9 +42,11 @@ onMounted(async () => {
         <FontAwesomeIcon :icon="faGrip" size="2xl" />
       </SummaryCard>
     </div>
-    <div class="flex justify-center py-16 w-full">
-      <div>
-        <ProductTable :items="products" />
+    <div class="py-16">
+      <div class="flex justify-center w-full">
+        <div>
+          <ProductTable :items="products" />
+        </div>
       </div>
     </div>
   </div>
