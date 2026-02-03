@@ -6,11 +6,11 @@ import { ProductApi } from "../services/product-api";
 import { Formatters } from "@/utils/formatter.utils";
 import { ProductUtils } from "../utils/product-utils";
 import { CategoryApi } from "../services/category-api";
+import ProductCard from "../components/product-card.vue";
 import ProductTable from "../components/product-table.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
-import ProductCard from "../components/product-card.vue";
 
 const products = ref<Product[]>([]);
 const highestPriceProducts = ref<Product[]>([]);
@@ -64,16 +64,22 @@ onMounted(async () => {
     <div class="flex items-center justify-center w-full h-24">
       <div class="bg-gray-500 h-1 w-full"></div>
     </div>
-    <div
-      class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center py-4"
-    >
-      <ProductCard
-        v-for="item in highestPriceProducts"
-        :key="item.id"
-        :name="item.title"
-        :price="item.price"
-        :image="item.images[0] ?? ''"
-      />
+
+    <div class="flex flex-col justify-center align-middle">
+      <div class="p-4">
+        <H1>Mais caros</H1>
+      </div>
+      <div
+        class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center py-4"
+      >
+        <ProductCard
+          v-for="item in highestPriceProducts"
+          :key="item.id"
+          :name="item.title"
+          :price="item.price"
+          :image="item.images[0] ?? ''"
+        />
+      </div>
     </div>
     <div class="flex items-center justify-center w-full h-24">
       <div class="bg-gray-500 h-1 w-full"></div>
