@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/auth";
+import { authGuard } from "@/guards/auth-guard";
 import { authRoutes } from "@/pages/auth/router";
 import { productRoutes } from "@/pages/products/router";
 import { createRouter, createWebHistory } from "vue-router";
@@ -16,33 +16,6 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, _from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-
-  const authStore = useAuthStore();
-  const isUserAuthenticated = authStore.isAuthenticated;
-
-  if (!isUserAuthenticated && requiresAuth) {
-    next("/");
-
-    return;
-  }
-
-  try {
-    await authStore.fetchUser();
-  } catch {
-    authStore.logout();
-
-    next("/");
-    return;
-  }
-
-  if (to.path === "/" && isUserAuthenticated) {
-    next("/dashboard");
-    return;
-  }
-
-  next();
-});
+router.beforeEach(authGuard);
 
 export default router;
