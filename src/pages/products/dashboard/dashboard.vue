@@ -20,7 +20,6 @@ const avgPrice = ref(0);
 const isLoading = ref(true);
 const offSet = ref(0);
 const limit = ref(10);
-const infiniteScrollProducts = ref<Product[]>([]);
 const scrollTrigger = ref(null);
 
 const { hasMore, loadMore, items, loading } = useInfiniteProducts();
@@ -29,15 +28,10 @@ onMounted(async () => {
   try {
     loadMore();
 
-    const [limitedProductsQueryRes, prodRes, catRes] = await Promise.all([
-      ProductApi.getProducts({ offset: offSet.value, limit: limit.value }),
+    const [prodRes, catRes] = await Promise.all([
       ProductApi.getProducts(),
       CategoryApi.getCategories(),
     ]);
-
-    if (limitedProductsQueryRes.success) {
-      infiniteScrollProducts.value = limitedProductsQueryRes.data;
-    }
 
     if (prodRes.success) {
       products.value = prodRes.data;
@@ -135,11 +129,11 @@ onMounted(async () => {
         <div
           class="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"
         ></div>
-        Loading more products...
+        Carregando...
       </div>
 
       <p v-else-if="!hasMore" class="text-gray-400 text-sm italic">
-        You've reached the end of the catalog.
+        Fim do catálogo
       </p>
     </div>
 
