@@ -1,8 +1,17 @@
+type FormatToBrazillianNumber = {
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+};
 export class Formatters {
-  static formatToBrazillianNumber = (value: number): string => {
+  static formatToBrazillianNumber = (
+    value: number,
+    options?: FormatToBrazillianNumber,
+  ): string => {
+    console.log(options?.maximumFractionDigits);
+    console.log(options?.minimumFractionDigits);
     return new Intl.NumberFormat("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: options?.minimumFractionDigits ?? 2,
+      maximumFractionDigits: options?.maximumFractionDigits ?? 2,
     }).format(value);
   };
 }

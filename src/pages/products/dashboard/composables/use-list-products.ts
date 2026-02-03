@@ -2,7 +2,7 @@ import { ref } from "vue";
 import type { Product } from "@/types/product";
 import { ProductApi } from "../../services/product-api";
 
-export function useInfiniteProducts() {
+export function useListProducts() {
   const items = ref<Product[]>([]);
   const offset = ref(0);
   const limit = 2;

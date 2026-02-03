@@ -1,47 +1,30 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import H1 from "@/components/atoms/h1.vue";
-import type { Product } from "@/types/product";
-import { ProductApi } from "../services/product-api";
 import { Formatters } from "@/utils/formatter.utils";
-import { ProductUtils } from "../utils/product-utils";
-import { CategoryApi } from "../services/category-api";
 import ProductCard from "../components/product-card.vue";
 import ProductTable from "../components/product-table.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useListProducts } from "./composables/use-list-products";
 import SummaryCard from "@/components/molecules/summary-card.vue";
+import { useDashboardSummary } from "./composables/use-dashboard-summary";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
-import { useInfiniteProducts } from "./composables/use-infinite-products";
 
-const products = ref<Product[]>([]);
-const highestPriceProducts = ref<Product[]>([]);
-const activeCategories = ref("");
-const avgPrice = ref(0);
 const isLoading = ref(true);
-const offSet = ref(0);
-const limit = ref(10);
 const scrollTrigger = ref(null);
-
-const { hasMore, loadMore, items, loading } = useInfiniteProducts();
+const { hasMore, loadMore, items, loading } = useListProducts();
+const {
+  activeCategories,
+  avgPrice,
+  highestPriceProducts,
+  productsQuantity,
+  loadInfo,
+} = useDashboardSummary();
 
 onMounted(async () => {
   try {
     loadMore();
-
-    const [prodRes, catRes] = await Promise.all([
-      ProductApi.getProducts(),
-      CategoryApi.getCategories(),
-    ]);
-
-    if (prodRes.success) {
-      products.value = prodRes.data;
-      highestPriceProducts.value = ProductUtils.highestPriceProducts(
-        products.value,
-        5,
-      );
-      avgPrice.value = ProductUtils.avgPrice(products.value);
-    }
-    if (catRes.success) activeCategories.value = catRes.data.length.toString();
+    loadInfo();
   } finally {
     isLoading.value = false;
   }
@@ -70,7 +53,15 @@ onMounted(async () => {
     <div
       class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center py-4"
     >
-      <SummaryCard label="Produtos" :content="products.length.toFixed(0)">
+      <SummaryCard
+        label="Produtos"
+        :content="
+          Formatters.formatToBrazillianNumber(productsQuantity, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })
+        "
+      >
         <FontAwesomeIcon :icon="faBoxOpen" size="2xl" />
       </SummaryCard>
       <SummaryCard label="Categorias ativas" :content="activeCategories">
@@ -84,7 +75,7 @@ onMounted(async () => {
       </SummaryCard>
     </div>
     <div class="flex items-center justify-center w-full h-24">
-      <div class="bg-gray-500 h-1 w-full"></div>
+      <div class="bg-gray-500 h-1 w-full rounded-lg mx-4"></div>
     </div>
 
     <div class="flex flex-col justify-center align-middle">
@@ -104,7 +95,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="flex items-center justify-center w-full h-24">
-      <div class="bg-gray-500 h-1 w-full"></div>
+      <div class="bg-gray-500 h-1 w-full rounded-lg mx-4"></div>
     </div>
     <div class="py-16">
       <div class="md:flex justify-center min-w-full">
