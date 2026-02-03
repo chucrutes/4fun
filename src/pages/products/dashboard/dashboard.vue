@@ -11,19 +11,33 @@ import ProductTable from "../components/product-table.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
+import { useInfiniteProducts } from "./composables/use-infinite-products";
 
 const products = ref<Product[]>([]);
 const highestPriceProducts = ref<Product[]>([]);
 const activeCategories = ref("");
 const avgPrice = ref(0);
 const isLoading = ref(true);
+const offSet = ref(0);
+const limit = ref(10);
+const infiniteScrollProducts = ref<Product[]>([]);
+const scrollTrigger = ref(null);
+
+const { hasMore, loadMore, items, loading } = useInfiniteProducts();
 
 onMounted(async () => {
   try {
-    const [prodRes, catRes] = await Promise.all([
+    loadMore();
+
+    const [limitedProductsQueryRes, prodRes, catRes] = await Promise.all([
+      ProductApi.getProducts({ offset: offSet.value, limit: limit.value }),
       ProductApi.getProducts(),
       CategoryApi.getCategories(),
     ]);
+
+    if (limitedProductsQueryRes.success) {
+      infiniteScrollProducts.value = limitedProductsQueryRes.data;
+    }
 
     if (prodRes.success) {
       products.value = prodRes.data;
@@ -37,6 +51,20 @@ onMounted(async () => {
   } finally {
     isLoading.value = false;
   }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries[0]) return;
+      if (entries[0].isIntersecting && items.value.length > 0) {
+        loadMore();
+      }
+    },
+    { threshold: 1.0 },
+  );
+
+  if (!scrollTrigger.value) return;
+
+  observer.observe(scrollTrigger.value);
 });
 </script>
 
@@ -85,23 +113,36 @@ onMounted(async () => {
       <div class="bg-gray-500 h-1 w-full"></div>
     </div>
     <div class="py-16">
-      <div class="md:flex justify-center w-full">
+      <div class="md:flex justify-center min-w-full">
         <div class="overflow-x-auto">
-          <ProductTable :items="products" />
+          <ProductTable :items="items" />
         </div>
       </div>
     </div>
+    <div class="p-4 flex justify-center bg-white">
+      <button
+        v-if="hasMore && !loading"
+        @click="loadMore"
+        class="px-6 py-2 border border-gray-900 rounded-lg hover:bg-gray-900 hover:text-white transition-all active:scale-95"
+      >
+        See More
+      </button>
+
+      <div
+        v-else-if="loading"
+        class="flex items-center gap-2 text-gray-500 italic"
+      >
+        <div
+          class="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"
+        ></div>
+        Loading more products...
+      </div>
+
+      <p v-else-if="!hasMore" class="text-gray-400 text-sm italic">
+        You've reached the end of the catalog.
+      </p>
+    </div>
+
+    <div ref="scrollTrigger" class="h-1"></div>
   </div>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
