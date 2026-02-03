@@ -6,12 +6,14 @@ import { ProductApi } from "../services/product-api";
 import { Formatters } from "@/utils/formatter.utils";
 import { ProductUtils } from "../utils/product-utils";
 import { CategoryApi } from "../services/category-api";
-import ProductTable from "../components/product.table.vue";
+import ProductTable from "../components/product-table.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
+import ProductCard from "../components/product-card.vue";
 
 const products = ref<Product[]>([]);
+const highestPriceProducts = ref<Product[]>([]);
 const activeCategories = ref("");
 const avgPrice = ref(0);
 const isLoading = ref(true);
@@ -25,6 +27,10 @@ onMounted(async () => {
 
     if (prodRes.success) {
       products.value = prodRes.data;
+      highestPriceProducts.value = ProductUtils.highestPriceProducts(
+        products.value,
+        5,
+      );
       avgPrice.value = ProductUtils.avgPrice(products.value);
     }
     if (catRes.success) activeCategories.value = catRes.data.length.toString();
@@ -40,15 +46,8 @@ onMounted(async () => {
       <H1>Dashboard</H1>
     </div>
     <div
-      class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center"
+      class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center py-4"
     >
-      <div
-        v-if="isLoading"
-        class="bg-gray-100 rounded-xl p-5 border border-gray-200 animate-pulse"
-      >
-        <div class="h-4 bg-gray-300 rounded-md w-1/2 mb-4"></div>
-        <div class="h-8 bg-gray-300 rounded-md w-1/4"></div>
-      </div>
       <SummaryCard label="Produtos" :content="products.length.toFixed(0)">
         <FontAwesomeIcon :icon="faBoxOpen" size="2xl" />
       </SummaryCard>
@@ -62,9 +61,26 @@ onMounted(async () => {
         <FontAwesomeIcon :icon="faTag" size="2xl" />
       </SummaryCard>
     </div>
+    <div class="flex items-center justify-center w-full h-24">
+      <div class="bg-gray-500 h-1 w-full"></div>
+    </div>
+    <div
+      class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center py-4"
+    >
+      <ProductCard
+        v-for="item in highestPriceProducts"
+        :key="item.id"
+        :name="item.title"
+        :price="item.price"
+        :image="item.images[0] ?? ''"
+      />
+    </div>
+    <div class="flex items-center justify-center w-full h-24">
+      <div class="bg-gray-500 h-1 w-full"></div>
+    </div>
     <div class="py-16">
-      <div class="flex justify-center w-full overflow-x-auto">
-        <div>
+      <div class="md:flex justify-center w-full">
+        <div class="overflow-x-auto">
           <ProductTable :items="products" />
         </div>
       </div>
