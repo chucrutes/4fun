@@ -1,8 +1,10 @@
-A well-structured `README.md` is essential for any admin panel. I've organized this to highlight your architecture (Atomic Design) and technical stack (Pinia/Guards), while keeping the instructions clear for other developers.
-
 # Admin Panel Dashboard
 
 A professional admin management interface built with **Vue 3** and **TypeScript**. This project features a robust authentication system, real-time data summarization, and a modular component architecture.
+
+## API
+
+- **Documentação:** https://fakeapi.platzi.com
 
 ---
 
