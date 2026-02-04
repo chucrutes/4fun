@@ -81,7 +81,3 @@ This project follows **Atomic Design** principles to ensure scalability and reus
 ### UI & Transitions
 
 The project utilizes a custom **Tailwind-based transition style** to provide smooth visual feedback during page navigations and data loading states.
-
----
-
-Would you like me to add a **"Folder Structure"** section to this markdown to explicitly show where the Atoms and Entity components live?

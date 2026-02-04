@@ -9,10 +9,11 @@ import { useListProducts } from "./composables/use-list-products";
 import SummaryCard from "@/components/molecules/summary-card.vue";
 import { useDashboardSummary } from "./composables/use-dashboard-summary";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
+import type { Product } from "@/types/product";
 
 const isLoading = ref(true);
-const scrollTrigger = ref(null);
-const { hasMore, loadMore, items, loading } = useListProducts();
+
+const { items, hasMore, loadMore, loading: listLoading } = useListProducts();
 const {
   activeCategories,
   avgPrice,
@@ -23,25 +24,10 @@ const {
 
 onMounted(async () => {
   try {
-    loadMore();
     loadInfo();
   } finally {
     isLoading.value = false;
   }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (!entries[0]) return;
-      if (entries[0].isIntersecting && items.value.length > 0) {
-        loadMore();
-      }
-    },
-    { threshold: 1.0 },
-  );
-
-  if (!scrollTrigger.value) return;
-
-  observer.observe(scrollTrigger.value);
 });
 </script>
 
@@ -100,30 +86,21 @@ onMounted(async () => {
     <div class="py-16">
       <div class="md:flex justify-center min-w-full">
         <div class="overflow-x-auto">
-          <ProductTable :items="items" />
+          <ProductTable :items="items as Product[]" />
         </div>
       </div>
     </div>
     <div class="p-4 flex justify-center bg-white">
       <button
-        v-if="hasMore && !loading"
+        v-if="hasMore"
+        :disabled="listLoading"
         @click="loadMore"
         class="px-6 py-2 border border-gray-900 rounded-lg hover:bg-gray-900 hover:text-white transition-all active:scale-95"
       >
         See More
       </button>
 
-      <div
-        v-else-if="loading"
-        class="flex items-center gap-2 text-gray-500 italic"
-      >
-        <div
-          class="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"
-        ></div>
-        Carregando...
-      </div>
-
-      <p v-else-if="!hasMore" class="text-gray-400 text-sm italic">
+      <p v-if="!hasMore" class="text-gray-400 text-sm italic">
         Fim do catálogo
       </p>
     </div>
