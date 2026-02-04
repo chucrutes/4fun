@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { reactive, ref, watch } from "vue";
 import type { Product } from "@/types/product";
 import type { Category } from "@/types/category";
 import { useQuery } from "@vue/apollo-composable";
@@ -26,9 +26,6 @@ export const GET_PRODUCTS = gql`
 `;
 
 export function useListProducts() {
-  const scrollTrigger = ref<HTMLElement | null>(null);
-  let observer: IntersectionObserver | null = null;
-
   const filters = reactive({
     offset: 0,
     limit: 5,
@@ -66,27 +63,6 @@ export function useListProducts() {
 
     filters.offset += filters.limit;
   };
-
-  onMounted(() => {
-    observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries || !entries[0]) return;
-
-        if (entries[0].isIntersecting && !loading.value && hasMore.value) {
-          loadMore();
-        }
-      },
-      { rootMargin: "400px" },
-    );
-
-    if (!scrollTrigger.value) return;
-
-    observer.observe(scrollTrigger.value);
-  });
-
-  onUnmounted(() => {
-    if (observer) observer.disconnect();
-  });
 
   return { items, loading, filters, hasMore, loadMore };
 }
