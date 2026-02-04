@@ -14,7 +14,7 @@ export type ApiResponse<Payload> =
     };
 
 export const apiClient = axios.create({
-  baseURL: ENVS.API_BASE_URL,
+  baseURL: `${ENVS.API_BASE_URL}/api/v1`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

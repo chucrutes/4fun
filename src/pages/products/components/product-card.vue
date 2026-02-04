@@ -19,6 +19,7 @@ const props = defineProps<ProductCardProps>();
       <img
         :src="image"
         :alt="imageAlt || name"
+        crossorigin="anonymous"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
       />
     </div>

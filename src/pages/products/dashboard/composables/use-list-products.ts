@@ -1,40 +1,68 @@
-import { ref } from "vue";
+import gql from "graphql-tag";
+import { reactive, ref, watch } from "vue";
 import type { Product } from "@/types/product";
-import { ProductApi } from "../../services/product-api";
+import type { Category } from "@/types/category";
+import { useQuery } from "@vue/apollo-composable";
+
+type Item = Partial<
+  Omit<Product, "category"> & { category: Partial<Category> }
+>;
+
+type ListProductsResponse = {
+  products: Item[];
+};
+
+export const GET_PRODUCTS = gql`
+  query GetProducts($offset: Int, $limit: Int) {
+    products(offset: $offset, limit: $limit) {
+      id
+      title
+      price
+      category {
+        name
+      }
+    }
+  }
+`;
 
 export function useListProducts() {
-  const items = ref<Product[]>([]);
-  const offset = ref(0);
-  const limit = 2;
+  const filters = reactive({
+    offset: 0,
+    limit: 5,
+  });
+
   const loading = ref(false);
   const hasMore = ref(true);
+  const items = ref<Item[]>([]);
 
-  const loadMore = async () => {
-    if (loading.value || !hasMore.value) return;
+  const { result } = useQuery<ListProductsResponse>(GET_PRODUCTS, filters);
 
-    loading.value = true;
-    try {
-      const response = await ProductApi.getProducts({
-        offset: offset.value,
-        limit,
-      });
+  watch(
+    result,
+    (newResult) => {
+      loading.value = true;
+      if (newResult?.products) {
+        const newItems = newResult.products;
 
-      if (!response.success) return;
+        items.value.push(...newItems);
 
-      const resItems = response.data;
-
-      if (resItems.length < limit) {
-        hasMore.value = false;
+        if (newItems.length < filters.limit) {
+          hasMore.value = false;
+          loading.value = false;
+        }
       }
 
-      items.value.push(...resItems);
-      offset.value += limit;
-    } catch (error) {
-      console.error("Failed to fetch products", error);
-    } finally {
       loading.value = false;
-    }
+    },
+    { immediate: true },
+  );
+
+  const loadMore = () => {
+    loading.value = true;
+    if (!hasMore.value) return;
+
+    filters.offset += filters.limit;
   };
 
-  return { items, loading, hasMore, loadMore };
+  return { items, loading, filters, hasMore, loadMore };
 }
