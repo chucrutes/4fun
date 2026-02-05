@@ -71,8 +71,7 @@ This project follows **Atomic Design** principles to ensure scalability and reus
 - **Dynamic Dashboard:**
 - **Data Summarization:** Quick glance at total products and active categories.
 - **Analytics:** Highlight of the most expensive products.
-- **Product Management:** Full list of products with high-performance rendering.
-
+- **Product Management:** Full list of products with high-performance rendering using graphql.
 - **Infinite Scroll:** Optimized data fetching using the `offset` and `limit` pattern.
 - **Responsive UI:** Fully compatible with mobile and desktop using **Tailwind CSS**.
 
@@ -81,3 +80,27 @@ This project follows **Atomic Design** principles to ensure scalability and reus
 ### UI & Transitions
 
 The project utilizes a custom **Tailwind-based transition style** to provide smooth visual feedback during page navigations and data loading states.
+
+## Improvements planned
+
+### UI/UX
+
+Better smoothness when searching with pagination
+Scroll trigger in the pagination
+Use better the width of the device to make it easier to read key information
+Create and update products
+Skeleton tree to load data on demand
+Review consisency of spacing and font sizes
+Review SOLID principles of UI components
+
+###
+Better controll of API calls to catch display errors
+Define variants for some components
+Study and refactor components considering the composables
+Review SOLID principles of the server
+s
+
+
+
+
+
