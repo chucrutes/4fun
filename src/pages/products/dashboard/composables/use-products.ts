@@ -1,7 +1,8 @@
 import gql from "graphql-tag";
 import { useDebounceFn } from "@vueuse/core";
-import { computed, reactive, ref, watch } from "vue";
+import { useToast } from "@/stores/use-toast";
 import { useQuery } from "@vue/apollo-composable";
+import { computed, reactive, ref, watch } from "vue";
 import type { PartialProduct } from "@/types/product";
 import { ProductApi } from "../../services/product-api";
 
@@ -23,6 +24,8 @@ export const GET_PRODUCTS = gql`
 `;
 
 export function useProducts() {
+  const toast = useToast();
+
   const filters = reactive({
     offset: 0,
     limit: 10,
@@ -74,8 +77,9 @@ export function useProducts() {
 
   const deleteProduct = (id: number) => {
     ProductApi.deleteProduct(id);
-
     items.value = items.value.filter((value) => value.id !== id);
+
+    toast.addToast("Produto excluído com sucesso", "success");
   };
 
   return {
