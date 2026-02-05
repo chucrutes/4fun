@@ -21,7 +21,7 @@ const alignmentClass = computed(() => {
 <template>
   <td
     :class="[
-      'p-2 border-b border-b-gray-800 border-r border-gray-800 last:border-r-0 first:border-l-0 max-w-48',
+      'py-2 px-4 border-b border-b-gray-800 border-r border-gray-800 last:border-r-0 first:border-l-0',
       alignmentClass,
     ]"
   >
