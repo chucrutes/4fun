@@ -1,7 +1,15 @@
 import "./style.css";
-import app from "./app.vue";
+import App from "./app.vue";
 import router from "./router";
-import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { apolloClient } from "@/graphql/apollo";
+import { createApp, h } from "vue";
+import { DefaultApolloClient } from "@vue/apollo-composable";
 
-createApp(app).use(router).use(createPinia()).mount("#app");
+const app = createApp({
+  render: () => h(App),
+});
+
+app.provide(DefaultApolloClient, apolloClient);
+
+app.use(router).use(createPinia()).mount("#app");

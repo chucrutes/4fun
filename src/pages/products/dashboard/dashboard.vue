@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import H1 from "@/components/atoms/h1.vue";
+import Button from "@/components/atoms/button.vue";
 import { Formatters } from "@/utils/formatter.utils";
 import ProductCard from "../components/product-card.vue";
+import { useProducts } from "./composables/use-products";
 import ProductTable from "../components/product-table.vue";
+import SearchInput from "@/components/atoms/search-input.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { useListProducts } from "./composables/use-list-products";
 import SummaryCard from "@/components/molecules/summary-card.vue";
 import { useDashboardSummary } from "./composables/use-dashboard-summary";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
+import SectionDivider from "@/components/molecules/section-divider.vue";
 
 const isLoading = ref(true);
-const scrollTrigger = ref(null);
-const { hasMore, loadMore, items, loading } = useListProducts();
+
+const {
+  items,
+  hasMore,
+  loadMore,
+  filters,
+  loading: listLoading,
+  deleteProduct,
+} = useProducts();
 const {
   activeCategories,
   avgPrice,
@@ -23,25 +33,10 @@ const {
 
 onMounted(async () => {
   try {
-    loadMore();
     loadInfo();
   } finally {
     isLoading.value = false;
   }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (!entries[0]) return;
-      if (entries[0].isIntersecting && items.value.length > 0) {
-        loadMore();
-      }
-    },
-    { threshold: 1.0 },
-  );
-
-  if (!scrollTrigger.value) return;
-
-  observer.observe(scrollTrigger.value);
 });
 </script>
 
@@ -74,9 +69,8 @@ onMounted(async () => {
         <FontAwesomeIcon :icon="faTag" size="2xl" />
       </SummaryCard>
     </div>
-    <div class="flex items-center justify-center w-full h-24">
-      <div class="bg-gray-500 h-1 w-full rounded-lg mx-4"></div>
-    </div>
+
+    <SectionDivider />
 
     <div class="flex flex-col justify-center align-middle">
       <div class="p-4">
@@ -94,40 +88,32 @@ onMounted(async () => {
         />
       </div>
     </div>
-    <div class="flex items-center justify-center w-full h-24">
-      <div class="bg-gray-500 h-1 w-full rounded-lg mx-4"></div>
-    </div>
-    <div class="py-16">
-      <div class="md:flex justify-center min-w-full">
+
+    <SectionDivider />
+
+    <div class="flex flex-col justify-center items-center">
+      <div class="md:min-w-6xl max-w-full">
+        <div class="flex jus py-4">
+          <SearchInput v-model="filters.title" name="filterByName" />
+        </div>
+
         <div class="overflow-x-auto">
-          <ProductTable :items="items" />
+          <ProductTable
+            :items="items"
+            :delete-product="deleteProduct"
+          ></ProductTable>
         </div>
       </div>
     </div>
-    <div class="p-4 flex justify-center bg-white">
-      <button
-        v-if="hasMore && !loading"
-        @click="loadMore"
-        class="px-6 py-2 border border-gray-900 rounded-lg hover:bg-gray-900 hover:text-white transition-all active:scale-95"
-      >
-        See More
-      </button>
 
-      <div
-        v-else-if="loading"
-        class="flex items-center gap-2 text-gray-500 italic"
-      >
-        <div
-          class="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"
-        ></div>
-        Carregando...
-      </div>
+    <div class="flex justify-center p-4">
+      <Button v-if="hasMore" :disabled="listLoading" @click="loadMore" size="lg"
+        >Ver mais
+      </Button>
 
-      <p v-else-if="!hasMore" class="text-gray-400 text-sm italic">
+      <p v-if="!hasMore && !listLoading" class="text-gray-400 text-sm italic">
         Fim do catálogo
       </p>
     </div>
-
-    <div ref="scrollTrigger" class="h-1"></div>
   </div>
 </template>

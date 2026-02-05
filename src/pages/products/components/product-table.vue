@@ -2,7 +2,7 @@
 import Td from "@/components/atoms/td.vue";
 import Th from "@/components/atoms/th.vue";
 import Tr from "@/components/atoms/tr.vue";
-import type { Product } from "@/types/product";
+import type { PartialProduct } from "@/types/product";
 import Button from "@/components/atoms/button.vue";
 import Table from "@/components/molecules/table.vue";
 import { Formatters } from "@/utils/formatter.utils";
@@ -10,7 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 
 type ProductTableProps = {
-  items: Product[];
+  items: PartialProduct[];
+  deleteProduct: (id: number) => void;
 };
 
 const props = defineProps<ProductTableProps>();
@@ -32,7 +33,7 @@ const props = defineProps<ProductTableProps>();
           <span
             class="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 border border-green-200 rounded-full"
           >
-            $ {{ Formatters.formatToBrazillianNumber(item.price) }}
+            R$ {{ Formatters.formatToBrazillianNumber(item.price) }}
           </span>
         </Td>
         <Td>
@@ -40,7 +41,7 @@ const props = defineProps<ProductTableProps>();
             <Button :disabled="true">
               <FontAwesomeIcon :icon="faPen" />
             </Button>
-            <Button :disabled="true">
+            <Button :click="() => deleteProduct(item.id)">
               <FontAwesomeIcon :icon="faTrash" style="color: red" />
             </Button>
           </div>

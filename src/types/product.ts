@@ -9,3 +9,7 @@ export type Product = {
   category: Category;
   images: string[];
 };
+
+export type PartialProduct = Pick<Product, "id" | "title" | "price"> & {
+  category: Pick<Category, "id" | "name">;
+};
