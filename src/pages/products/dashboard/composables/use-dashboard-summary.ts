@@ -10,6 +10,7 @@ export function useDashboardSummary() {
   const activeCategories = ref("");
   const avgPrice = ref(0);
   const productsQuantity = ref(0);
+  const productsPerCategory = ref<Record<string, number>>();
 
   const loadInfo = async () => {
     try {
@@ -25,6 +26,10 @@ export function useDashboardSummary() {
           products.value,
           5,
         );
+        productsPerCategory.value = ProductUtils.countProductsByCategory(
+          products.value,
+        );
+        console.log(Object.keys(productsPerCategory));
         avgPrice.value = ProductUtils.avgPrice(products.value);
       }
       if (catRes.success)
@@ -35,10 +40,12 @@ export function useDashboardSummary() {
   };
 
   return {
-    productsQuantity,
-    highestPriceProducts,
-    activeCategories,
     avgPrice,
+    productsQuantity,
+    activeCategories,
+    productsPerCategory,
+    highestPriceProducts,
+
     loadInfo,
   };
 }

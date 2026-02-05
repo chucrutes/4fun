@@ -9,9 +9,10 @@ import ProductTable from "../components/product-table.vue";
 import SearchInput from "@/components/atoms/search-input.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
+import CategoryChart from "@/components/molecules/category-chart.vue";
+import SectionDivider from "@/components/molecules/section-divider.vue";
 import { useDashboardSummary } from "./composables/use-dashboard-summary";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
-import SectionDivider from "@/components/molecules/section-divider.vue";
 
 const isLoading = ref(true);
 
@@ -28,6 +29,8 @@ const {
   avgPrice,
   highestPriceProducts,
   productsQuantity,
+  productsPerCategory,
+
   loadInfo,
 } = useDashboardSummary();
 
@@ -59,7 +62,7 @@ onMounted(async () => {
       >
         <FontAwesomeIcon :icon="faBoxOpen" size="2xl" />
       </SummaryCard>
-      <SummaryCard label="Categorias ativas" :content="activeCategories">
+      <SummaryCard label="Cat. ativas" :content="activeCategories">
         <FontAwesomeIcon :icon="faGrip" size="2xl" />
       </SummaryCard>
       <SummaryCard
@@ -70,8 +73,17 @@ onMounted(async () => {
       </SummaryCard>
     </div>
 
-    <SectionDivider />
+    <template v-if="productsPerCategory">
+      <SectionDivider />
+      <div class="flex justify-center w-full">
+        <CategoryChart
+          :data="productsPerCategory"
+          label="Distribuição por categorias"
+        />
+      </div>
+    </template>
 
+    <SectionDivider />
     <div class="flex flex-col justify-center align-middle">
       <div class="p-4">
         <H1>Mais caros</H1>
