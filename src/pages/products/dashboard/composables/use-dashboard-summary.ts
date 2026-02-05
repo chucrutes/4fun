@@ -23,7 +23,7 @@ export function useDashboardSummary() {
   const loadInfo = async () => {
     try {
       const [prodRes, catRes] = await Promise.all([
-        ProductApi.getProducts(),
+        ProductApi.list(),
         CategoryApi.getCategories(),
       ]);
 

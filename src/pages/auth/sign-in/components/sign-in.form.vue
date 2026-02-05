@@ -4,12 +4,13 @@ import { useSignInForm } from "../composables/use-sign-in";
 import FormField from "@/components/molecules/form-field.vue";
 import ErrorSpan from "@/components/atoms/error-span.vue";
 import Button from "@/components/atoms/button.vue";
+import Form from "@/components/molecules/form.vue";
 
 const { email, handleSubmit, password, errors, errorMessage } = useSignInForm();
 </script>
 
 <template>
-  <form @submit="handleSubmit" class="flex flex-col items-center gap-4">
+  <Form :handle-submit="handleSubmit">
     <ErrorSpan v-if="errorMessage" :message="errorMessage" />
     <FormField label="E-mail" id="email" :error="errors.email">
       <Input
@@ -32,5 +33,5 @@ const { email, handleSubmit, password, errors, errorMessage } = useSignInForm();
     <div class="py-2">
       <Button type="submit" size="lg"> Entrar </Button>
     </div>
-  </form>
+  </Form>
 </template>
