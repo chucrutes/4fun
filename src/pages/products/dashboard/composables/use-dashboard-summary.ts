@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import type { Product } from "@/types/product";
 import { ProductApi } from "../../services/product-api";
 import { CategoryApi } from "../../services/category-api";
@@ -11,6 +11,14 @@ export function useDashboardSummary() {
   const avgPrice = ref(0);
   const productsQuantity = ref(0);
   const productsPerCategory = ref<Record<string, number>>();
+
+  onMounted(async () => {
+    try {
+      loadInfo();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
   const loadInfo = async () => {
     try {
