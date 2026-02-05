@@ -4,7 +4,7 @@ A professional admin management interface built with **Vue 3** and **TypeScript*
 
 ## API
 
-- **Documentação:** https://fakeapi.platzi.com
+- **Docs:** https://fakeapi.platzi.com
 
 ---
 
