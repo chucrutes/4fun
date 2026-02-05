@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
 import H1 from "@/components/atoms/h1.vue";
 import Button from "@/components/atoms/button.vue";
 import { Formatters } from "@/utils/formatter.utils";
@@ -13,8 +12,6 @@ import CategoryChart from "@/components/molecules/category-chart.vue";
 import SectionDivider from "@/components/molecules/section-divider.vue";
 import { useDashboardSummary } from "./composables/use-dashboard-summary";
 import { faBoxOpen, faGrip, faTag } from "@fortawesome/free-solid-svg-icons";
-
-const isLoading = ref(true);
 
 const {
   items,
@@ -30,17 +27,7 @@ const {
   highestPriceProducts,
   productsQuantity,
   productsPerCategory,
-
-  loadInfo,
 } = useDashboardSummary();
-
-onMounted(async () => {
-  try {
-    loadInfo();
-  } finally {
-    isLoading.value = false;
-  }
-});
 </script>
 
 <template>
@@ -75,7 +62,7 @@ onMounted(async () => {
 
     <template v-if="productsPerCategory">
       <SectionDivider />
-      <div class="flex justify-center w-full">
+      <div>
         <CategoryChart
           :data="productsPerCategory"
           label="Distribuição por categorias"
@@ -84,6 +71,7 @@ onMounted(async () => {
     </template>
 
     <SectionDivider />
+
     <div class="flex flex-col justify-center align-middle">
       <div class="p-4">
         <H1>Mais caros</H1>
