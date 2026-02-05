@@ -29,7 +29,6 @@ export function useDashboardSummary() {
         productsPerCategory.value = ProductUtils.countProductsByCategory(
           products.value,
         );
-        console.log(Object.keys(productsPerCategory));
         avgPrice.value = ProductUtils.avgPrice(products.value);
       }
       if (catRes.success)

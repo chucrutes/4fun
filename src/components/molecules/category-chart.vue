@@ -20,7 +20,6 @@ ChartJS.register(Title, Tooltip, BarElement, CategoryScale, LinearScale);
 
 const chartData = computed(() => ({
   labels: Object.keys(props.data),
-
   datasets: [
     {
       data: Object.values(props.data),
@@ -40,6 +39,7 @@ const chartOptions: ChartOptions<"bar"> = {
       display: false,
     },
   },
+
   scales: {
     x: {
       grid: {
@@ -47,6 +47,9 @@ const chartOptions: ChartOptions<"bar"> = {
       },
       ticks: {
         color: "#000000",
+        autoSkip: true,
+        maxRotation: 45,
+        minRotation: 0,
       },
     },
     y: {
@@ -65,8 +68,13 @@ const chartOptions: ChartOptions<"bar"> = {
 </script>
 
 <template>
-  <div class="h-96 w-100 md:w-140 space-y-4">
-    <h2>{{ label }}</h2>
-    <Bar :data="chartData" :options="chartOptions" />
+  <div class="min-h-64 w-full">
+    <h2 class="mb-2">{{ label }}</h2>
+
+    <div class="h-full w-full overflow-x-auto overflow-y-hidden">
+      <div class="h-full min-w-150">
+        <Bar :data="chartData" :options="chartOptions" />
+      </div>
+    </div>
   </div>
 </template>

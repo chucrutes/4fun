@@ -75,7 +75,7 @@ onMounted(async () => {
 
     <template v-if="productsPerCategory">
       <SectionDivider />
-      <div class="flex justify-center w-full">
+      <div>
         <CategoryChart
           :data="productsPerCategory"
           label="Distribuição por categorias"
@@ -84,6 +84,7 @@ onMounted(async () => {
     </template>
 
     <SectionDivider />
+
     <div class="flex flex-col justify-center align-middle">
       <div class="p-4">
         <H1>Mais caros</H1>
