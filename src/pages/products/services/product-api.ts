@@ -24,4 +24,16 @@ export class ProductApi {
 
     return response;
   }
+
+  public static async deleteProduct(
+    id: number,
+  ): Promise<ApiResponse<GetProductsResponse>> {
+    const url = `${this.BASE_PATH}/${id}`;
+
+    const response = await handleRequest<GetProductsResponse>(
+      apiClient.delete(url),
+    );
+
+    return response;
+  }
 }

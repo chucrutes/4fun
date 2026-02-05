@@ -32,7 +32,7 @@ const scrollToInput = () => {
   inputRef.value?.scrollIntoView({ behavior: "smooth", block: "center" });
 };
 
-const handleInput = (event: Event) => {
+const handleChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
   const value = target.value;
 
@@ -47,7 +47,7 @@ const togglePasswordVisibility = () => {
 </script>
 <template>
   <div
-    class="flex rounded-lg px2 py-1 border border-gray-800 hover:border-primary focus-within:border-2 focus-within:primary focus-within:border-primary"
+    class="flex rounded-lg px-2 py-1 border border-gray-800 hover:border-primary focus-within:border-2 focus-within:primary focus-within:border-primary"
   >
     <input
       :id="name"
@@ -60,7 +60,7 @@ const togglePasswordVisibility = () => {
       :maxlength="maxLength"
       :disabled="disabled"
       @focus="scrollToInput"
-      @input="handleInput"
+      @change="handleChange"
     />
     <button
       v-if="type === 'password'"

@@ -3,6 +3,7 @@ import Input from "@/components/atoms/input.vue";
 import { useSignInForm } from "../composables/use-sign-in";
 import FormField from "@/components/molecules/form-field.vue";
 import ErrorSpan from "@/components/atoms/error-span.vue";
+import Button from "@/components/atoms/button.vue";
 
 const { email, handleSubmit, password, errors, errorMessage } = useSignInForm();
 </script>
@@ -29,12 +30,7 @@ const { email, handleSubmit, password, errors, errorMessage } = useSignInForm();
       />
     </FormField>
     <div class="py-2">
-      <button
-        class="bg-primary rounded-lg px-4 py-2 text-2xl text-white"
-        type="submit"
-      >
-        Entrar
-      </button>
+      <Button type="submit" size="lg"> Entrar </Button>
     </div>
   </form>
 </template>
