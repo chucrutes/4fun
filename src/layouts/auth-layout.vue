@@ -25,7 +25,7 @@ const handleLogout = () => {
       </div>
       <div class="px-2 justify-self-end">
         <Button :click="handleLogout">
-          <FontAwesomeIcon :icon="faSignOut" class="cursor-pointer text-2xl" />
+          <FontAwesomeIcon :icon="faSignOut" class="text-2xl" />
         </Button>
       </div>
     </header>
