@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <h1 :class="[{ 'font-bold': props.bold }]">
+  <h2 :class="[{ 'font-bold': props.bold }]">
     <slot></slot>
-  </h1>
+  </h2>
 </template>

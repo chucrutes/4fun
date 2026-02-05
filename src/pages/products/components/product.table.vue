@@ -7,7 +7,8 @@ import Button from "@/components/atoms/button.vue";
 import Table from "@/components/molecules/table.vue";
 import { Formatters } from "@/utils/formatter.utils";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPen, faEye } from "@fortawesome/free-solid-svg-icons";
+import router from "@/router";
 
 type ProductTableProps = {
   items: PartialProduct[];
@@ -38,6 +39,9 @@ const props = defineProps<ProductTableProps>();
         </Td>
         <Td>
           <div class="flex justify-center gap-2">
+            <Button :click="() => router.push(`/products/${item.id}`)">
+              <FontAwesomeIcon :icon="faEye" />
+            </Button>
             <Button :disabled="true">
               <FontAwesomeIcon :icon="faPen" />
             </Button>

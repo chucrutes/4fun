@@ -4,7 +4,7 @@ import Button from "@/components/atoms/button.vue";
 import { Formatters } from "@/utils/formatter.utils";
 import ProductCard from "../components/product-card.vue";
 import { useProducts } from "./composables/use-products";
-import ProductTable from "../components/product-table.vue";
+import ProductTable from "../components/product.table.vue";
 import SearchInput from "@/components/atoms/search-input.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import SummaryCard from "@/components/molecules/summary-card.vue";
@@ -79,13 +79,7 @@ const {
       <div
         class="gap-4 flex flex-col items-center md:flex-row md:flex-wrap md:justify-center py-4"
       >
-        <ProductCard
-          v-for="item in highestPriceProducts"
-          :key="item.id"
-          :name="item.title"
-          :price="item.price"
-          :image="item.images[0] ?? ''"
-        />
+        <ProductCard v-for="item in highestPriceProducts" :product="item" />
       </div>
     </div>
 

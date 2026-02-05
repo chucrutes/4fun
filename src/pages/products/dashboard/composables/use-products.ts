@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { useDebounceFn } from "@vueuse/core";
-import { computed, reactive, ref, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
+import { computed, reactive, ref, watch } from "vue";
 import type { PartialProduct } from "@/types/product";
 import { ProductApi } from "../../services/product-api";
 
@@ -73,7 +73,7 @@ export function useProducts() {
   };
 
   const deleteProduct = (id: number) => {
-    ProductApi.deleteProduct(id);
+    ProductApi.delete(id);
 
     items.value = items.value.filter((value) => value.id !== id);
   };
