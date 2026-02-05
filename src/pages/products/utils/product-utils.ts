@@ -13,4 +13,17 @@ export class ProductUtils {
 
     return total / totalProducts;
   }
+
+  static countProductsByCategory(products: Product[]): Record<string, number> {
+    return products.reduce(
+      (acc, product) => {
+        const { name } = product.category;
+
+        acc[name] = (acc[name] || 0) + 1;
+
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+  }
 }

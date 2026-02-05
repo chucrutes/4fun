@@ -76,7 +76,8 @@ export function useProducts() {
   };
 
   const deleteProduct = (id: number) => {
-    ProductApi.deleteProduct(id);
+    ProductApi.delete(id);
+
     items.value = items.value.filter((value) => value.id !== id);
 
     toast.addToast("Produto excluído com sucesso", "success");
