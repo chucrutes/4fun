@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from "@/router";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/auth/auth.store";
 import Button from "@/components/atoms/button.vue";
 import DashboardIcon from "@/assets/dashboard-icon.vue";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons";

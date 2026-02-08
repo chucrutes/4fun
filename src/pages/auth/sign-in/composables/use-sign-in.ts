@@ -1,15 +1,14 @@
 import { ref } from "vue";
 import router from "@/router";
-import { useForm } from "vee-validate";
-import { useAuthStore } from "@/stores/auth";
-import { AuthApi } from "../../services/auth-api";
 import {
   SignInValidationSchema,
   type SignInSchemaType,
 } from "../types/sign-in.schema";
+import { useForm } from "vee-validate";
+import { useAuthStore } from "@/auth/auth.store";
 
 export function useSignInForm() {
-  const { setTokens, setUser } = useAuthStore();
+  const authStore = useAuthStore();
 
   const errorMessage = ref<string | null>(null);
 
@@ -25,33 +24,12 @@ export function useSignInForm() {
   const [password] = defineField("password");
 
   const onSubmit = handleSubmit(async (values) => {
-    const req = await AuthApi.signIn(values);
+    const res = await authStore.signIn(values);
 
-    if (!req.success) {
-      errorMessage.value = "Usuário ou senha inválida.";
+    if (!res.success) {
+      errorMessage.value = mapError(res.error);
       return;
     }
-
-    const { access_token, refresh_token } = req.data;
-
-    if (!access_token) {
-      return;
-    }
-
-    const profileReq = await AuthApi.getProfile(access_token);
-
-    if (!profileReq.success) {
-      errorMessage.value = "Erro ao obter perfil.";
-      return;
-    }
-
-    if (profileReq.data.role !== "admin") {
-      errorMessage.value = "Acesso restrito a administradores.";
-      return;
-    }
-
-    setTokens(access_token, refresh_token);
-    setUser(profileReq.data);
 
     errorMessage.value = null;
 
@@ -60,9 +38,23 @@ export function useSignInForm() {
 
   return {
     email,
-    password,
-    handleSubmit: onSubmit,
-    errorMessage,
     errors,
+    password,
+    errorMessage,
+
+    handleSubmit: onSubmit,
   };
+}
+
+function mapError(code?: string) {
+  switch (code) {
+    case "INVALID_CREDENTIALS":
+      return "Usuário ou senha inválida.";
+    case "FORBIDDEN":
+      return "Acesso restrito a administradores.";
+    case "PROFILE_ERROR":
+      return "Erro ao obter perfil.";
+    default:
+      return "Erro inesperado.";
+  }
 }
